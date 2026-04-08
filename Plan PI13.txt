@@ -1,10 +1,10 @@
 1 TROJHODINOVKA TVORENIE PLANU A PRIPRAVA
 Planovanie
+Nastavenie Git repozitara a prvy commit
 
 
 2 TROJHODINOVKA MODELY ADMIN A CRUD
 Inicializacia Django projektu a aplikacie
-Nastavenie Git repozitara a prvy commit
 Definicia modelov v models.py vratane MN vztahu ReservationEquipment
 Pridanie poli pre Room a Reservation cas_od cas_do
 Vykonanie migracii databazy
