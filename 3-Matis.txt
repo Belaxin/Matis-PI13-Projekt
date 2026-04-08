@@ -1,0 +1,33 @@
+
+1 TROJHODINOVKA PLANOVANIE A ZAKLADNY BACKEND
+Instalacia prostredia a inicializacia Django projektu
+Definicia vsetkych modelov v models.py Room Reservation Equipment
+Vytvorenie MN vztahu ReservationEquipment
+
+2 TROJHODINOVKA MIGRACIE ADMIN A AUTH
+Vykonanie migracii databazy a vytvorenie superusera
+Registracia modelov v admin.py administratorsky CRUD
+Nastavenie prihlasovania a odhlasovania Django auth views
+Zakladne nastavenie roli administrator vs bezny pouzivatel
+Vytvorenie prvych testovacich dat v admin rozhrani
+
+3 TROJHODINOVKA LOGIKA REZERVACII A FORMULARE
+Implementacia kontroly kolizii validacia prekryvu casov v modeli
+Vytvorenie Django formularov pre tvorbu rezervacie
+Logika priradenia vybavy k rezervacii
+Zabezpecenie ze pouzivatel moze upravovat len vlastne rezervacie
+Tvorba URL smerov pre hlavne funkcionality
+
+4 TROJHODINOVKA FRONTEND FILTRE A REST API
+Tvorba HTML sablon pre zoznam miestnosti a detail s rezervaciami
+Implementacia filtrovania podla datumu a typu cez GET parametre
+Vytvorenie REST API endpointov cez JsonResponse pre miestnosti a rezervacie
+Implementacia tlacitka na zrusenie rezervacie pouzivatelom
+Zakladny styling cez Bootstrap CDN link v base.html
+
+5 TROJHODINOVKA NASADENIE A DOKUMENTACIA
+Konfiguracia pre hosting Gunicorn Whitenoise a requirements.txt(optional)
+Nasadenie na free platformu Render alebo PythonAnywhere
+Finalne otestovanie vsetkych funkcii v produkcii
+Napisanie README.md a strucnej dokumentacie k projektu
+Priprava prezentacie screenshoty a popis projektu
