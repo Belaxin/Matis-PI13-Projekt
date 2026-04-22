@@ -1,0 +1,47 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Dashboard</h2>
+  <a href="{% url 'reservation_create' %}" class="btn btn-primary">+ Nová rezervácia</a>
+</div>
+
+<!-- These cards will show real data once you wire up the models -->
+<div class="row g-3 mb-4">
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <div class="fs-1">—</div>
+        <div class="text-muted">Miestností</div>
+        <a href="{% url 'room_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <div class="fs-1">—</div>
+        <div class="text-muted">Rezervácií dnes</div>
+        <a href="{% url 'reservation_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card text-center shadow-sm">
+      <div class="card-body">
+        <div class="fs-1">—</div>
+        <div class="text-muted">Kusov vybavenia</div>
+        <a href="{% url 'equipment_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header">Dnešné rezervácie</div>
+  <div class="card-body text-muted">
+    Zatiaľ žiadne dáta — najprv vytvor modely a doplň context vo views.py.
+  </div>
+</div>
+{% endblock %}

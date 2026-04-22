@@ -1,13 +1,12 @@
-
 1 TROJHODINOVKA PLANOVANIE A ZAKLADNY BACKEND
-Instalacia prostredia a inicializacia Django projektu
-Definicia vsetkych modelov v models.py Room Reservation Equipment
-Vytvorenie MN vztahu ReservationEquipment
+Instalacia prostredia a inicializacia Django projektu  ✓
+Definicia vsetkych modelov v models.py Room Reservation Equipment  ✓
+Vytvorenie MN vztahu ReservationEquipment  ✓
 
 2 TROJHODINOVKA MIGRACIE ADMIN A AUTH
-Vykonanie migracii databazy a vytvorenie superusera
-Registracia modelov v admin.py administratorsky CRUD
-Nastavenie prihlasovania a odhlasovania Django auth views
+Vykonanie migracii databazy a vytvorenie superusera  ✓
+Registracia modelov v admin.py administratorsky CRUD  ✓
+Nastavenie prihlasovania a odhlasovania Django auth views   ✓
 Zakladne nastavenie roli administrator vs bezny pouzivatel
 Vytvorenie prvych testovacich dat v admin rozhrani
 
