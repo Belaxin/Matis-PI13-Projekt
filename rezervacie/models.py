@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 class Room(models.Model):
     class Typ(models.TextChoices):
@@ -14,7 +14,9 @@ class Room(models.Model):
     cisloMiestnosti = models.IntegerField()
     kapacitaMiestnosti = models.IntegerField()
     typMiestnosti = models.CharField(max_length=2, choices=Typ.choices, default=Typ.INE)
-    popisMiestnosti = models.CharField(max_length=500)
+    popisMiestnosti = models.CharField(max_length=500, null=True, blank=True)
+    def __str__(self):
+        return self.nazovMiestnosti
 
 class Equipment(models.Model):
     class Typ(models.TextChoices):
@@ -23,21 +25,19 @@ class Equipment(models.Model):
         SPORT       = "SP", "Šport"
         INE         = "IN", "Iné"
     nazovVybavenia = models.CharField(max_length=100)
-    pocetKusov = models.IntegerField()
-    popis = models.CharField(max_length=500)
+    popis = models.CharField(max_length=500, null=True, blank=True)
     typVybavenia = models.CharField(max_length=2, choices=Typ.choices, default=Typ.INE)
+    def __str__(self):
+        return self.nazovVybavenia
 
-class User(models.Model):
-    Meno = models.CharField( max_length=100)
-    Priezvisko = models.CharField(max_length=100)
+
 
 class Reservation(models.Model):
-    nazovRezervacie = models.CharField(max_length=100)
     datumRezervacie = models.DateField(auto_now=False, auto_now_add=False)
     casOd = models.TimeField(auto_now=False, auto_now_add=False)
     casDo = models.TimeField(auto_now=False, auto_now_add=False)
     ucelRezervacie = models.CharField(max_length=100)
-    vybavenie = models.ManyToManyField(Equipment, through="ReservationEquipment")
+    vybavenie = models.ManyToManyField(Equipment, through="ReservationEquipment", null=True, blank=True)
     miestnostRezervacie = models.ForeignKey(          
         Room,
         on_delete=models.CASCADE,
@@ -60,10 +60,22 @@ class Reservation(models.Model):
             )
         ]
 
+    @property
+    def nazovRezervacie(self):
+        pouzivatel = self.pouzivatelRezervacie.username + self.pouzivatelRezervacie.Priezvisko if self.pouzivatelRezervacie else "Anonym"
+        miestnost = self.miestnostRezervacie.nazovMiestnosti if self.miestnostRezervacie else "Neznáma"
+        
+        return f"{pouzivatel} - {miestnost} ({self.datumRezervacie})"
+
+    def __str__(self):
+        return self.nazovRezervacie
+
 
 
 class ReservationEquipment(models.Model):
     rezervacia = models.ForeignKey(Reservation, on_delete=models.CASCADE)
     vybavenie  = models.ForeignKey(Equipment, on_delete=models.CASCADE)
     pocetKusov = models.IntegerField()
-    poznamka = models.CharField(max_length=100)
+    poznamka = models.CharField(max_length=100, null=True, blank=True)
+    def __str__(self):
+        return f"{self.rezervacia} - {self.vybavenie} x{self.pocetKusov}"

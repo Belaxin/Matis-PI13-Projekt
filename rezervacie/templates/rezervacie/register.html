@@ -1,0 +1,50 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}Registrácia{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <h4 class="mb-4 text-center">Registrácia</h4>
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label">Používateľské meno</label>
+            {{ form.username }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            {{ form.email }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Heslo</label>
+            {{ form.password }}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Potvrď heslo</label>
+            {{ form.password2 }}
+          </div>
+          {% if form.errors %}
+            <div class="alert alert-danger small">
+              {% for field in form %}
+                {% for error in field.errors %}
+                  <div>{{ error }}</div>
+                {% endfor %}
+              {% endfor %}
+              {% for error in form.non_field_errors %}
+                <div>{{ error }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+          <button type="submit" class="btn btn-primary w-100">Vytvoriť účet</button>
+        </form>
+        <hr />
+        <p class="text-center small mb-0">
+          Už máš účet? <a href="{% url 'login' %}">Prihlás sa</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

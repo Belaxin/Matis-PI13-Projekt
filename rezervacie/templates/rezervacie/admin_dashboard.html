@@ -1,0 +1,159 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}Admin dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h2>Admin dashboard</h2>
+</div>
+
+<!-- ── USERS ──────────────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>👥 Používatelia</span>
+    <a href="{% url 'admin_user_create' %}" class="btn btn-sm btn-primary">+ Nový používateľ</a>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Používateľské meno</th>
+          <th>Email</th>
+          <th>Rola</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.username }}</td>
+          <td>{{ u.email }}</td>
+          <td>
+            {% if u.is_staff %}
+              <span class="badge bg-warning text-dark">Admin</span>
+            {% else %}
+              <span class="badge bg-secondary">Používateľ</span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            <a href="{% url 'admin_user_edit' u.pk %}" class="btn btn-sm btn-outline-secondary">Upraviť</a>
+            <a href="{% url 'admin_user_delete' u.pk %}" class="btn btn-sm btn-outline-danger">Zmazať</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-muted p-3">Žiadni používatelia.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── RESERVATIONS ───────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>📆 Všetky rezervácie</span>
+    <a href="{% url 'reservation_create' %}" class="btn btn-sm btn-primary">+ Nová rezervácia</a>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Miestnosť</th>
+          <th>Dátum</th>
+          <th>Čas</th>
+          <th>Účel</th>
+          <th>Používateľ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in reservations %}
+        <tr>
+          <td>{{ r.miestnostRezervacie.nazovMiestnosti|default:"—" }}</td>
+          <td>{{ r.datumRezervacie }}</td>
+          <td>{{ r.casOd|time:"H:i" }} – {{ r.casDo|time:"H:i" }}</td>
+          <td>{{ r.ucelRezervacie }}</td>
+          <td>{{ r.pouzivatelRezervacie.username|default:"—" }}</td>
+          <td class="text-end">
+            <a href="{% url 'admin_reservation_delete' r.pk %}" class="btn btn-sm btn-outline-danger">Zmazať</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="6" class="text-muted p-3">Žiadne rezervácie.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── ROOMS ──────────────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>🏫 Miestnosti</span>
+    <a href="{% url 'room_create' %}" class="btn btn-sm btn-primary">+ Nová</a>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Názov</th>
+          <th>Číslo</th>
+          <th>Kapacita</th>
+          <th>Typ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for room in rooms %}
+        <tr>
+          <td>{{ room.nazovMiestnosti }}</td>
+          <td>{{ room.cisloMiestnosti }}</td>
+          <td>{{ room.kapacitaMiestnosti }}</td>
+          <td>{{ room.get_typMiestnosti_display }}</td>
+          <td class="text-end">
+            <a href="{% url 'room_edit' room.pk %}" class="btn btn-sm btn-outline-secondary">Upraviť</a>
+            <a href="{% url 'room_delete' room.pk %}" class="btn btn-sm btn-outline-danger">Zmazať</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="5" class="text-muted p-3">Žiadne miestnosti.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── EQUIPMENT ──────────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>🔧 Vybavenie</span>
+    <a href="{% url 'equipment_create' %}" class="btn btn-sm btn-primary">+ Nové</a>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Názov</th>
+          <th>Typ</th>
+          <th>Popis</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in equipment %}
+        <tr>
+          <td>{{ e.nazovVybavenia }}</td>
+          <td>{{ e.get_typVybavenia_display }}</td>
+          <td>{{ e.popis|default:"—" }}</td>
+          <td class="text-end">
+            <a href="{% url 'equipment_edit' e.pk %}" class="btn btn-sm btn-outline-secondary">Upraviť</a>
+            <a href="{% url 'equipment_delete' e.pk %}" class="btn btn-sm btn-outline-danger">Zmazať</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-muted p-3">Žiadne vybavenie.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

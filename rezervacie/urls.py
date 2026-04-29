@@ -27,8 +27,14 @@ urlpatterns = [
     path("equipment/<int:pk>/edit/",        views.equipment_edit,       name="equipment_edit"),
     path("equipment/<int:pk>/delete/",      views.equipment_delete,     name="equipment_delete"),
 
-    #login system
     path("login/",    auth_views.login_view,    name="login"),
     path("register/", auth_views.register_view, name="register"),
     path("logout/",   auth_views.logout_view,   name="logout"),
+ 
+    # admin
+    path("admin-panel/",                        auth_views.admin_dashboard,         name="admin_dashboard"),
+    path("admin-panel/users/new/",              auth_views.admin_user_create,       name="admin_user_create"),
+    path("admin-panel/users/<int:pk>/edit/",    auth_views.admin_user_edit,         name="admin_user_edit"),
+    path("admin-panel/users/<int:pk>/delete/",  auth_views.admin_user_delete,       name="admin_user_delete"),
+    path("admin-panel/reservations/<int:pk>/delete/", auth_views.admin_reservation_delete, name="admin_reservation_delete"),
 ]

@@ -7,8 +7,9 @@ Vytvorenie MN vztahu ReservationEquipment  ✓
 Vykonanie migracii databazy a vytvorenie superusera  ✓
 Registracia modelov v admin.py administratorsky CRUD  ✓
 Nastavenie prihlasovania a odhlasovania Django auth views   ✓
-Zakladne nastavenie roli administrator vs bezny pouzivatel
-Vytvorenie prvych testovacich dat v admin rozhrani
+Zakladne nastavenie roli administrator vs bezny pouzivatel ✓
+Vytvorenie prvych testovacich dat v admin rozhrani✓
+Textovy return v admin panely✓
 
 3 TROJHODINOVKA LOGIKA REZERVACII A FORMULARE
 Implementacia kontroly kolizii validacia prekryvu casov v modeli
