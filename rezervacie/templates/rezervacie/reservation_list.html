@@ -1,0 +1,67 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}Rezervácie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3>Rezervácie</h3>
+  <a href="{% url 'reservation_create' %}" class="btn btn-primary btn-sm">+ Nová rezervácia</a>
+</div>
+
+<!-- ── FILTERS ─────────────────────────────────────────────── -->
+<form method="get" class="row g-2 mb-4">
+  <div class="col-md-3">
+    <input type="date" name="datum" class="form-control form-control-sm" value="{{ request.GET.datum }}" placeholder="Dátum">
+  </div>
+  <div class="col-md-3">
+    <select name="miestnost" class="form-select form-select-sm">
+      <option value="">Všetky miestnosti</option>
+      {% for room in rooms %}
+        <option value="{{ room.pk }}" {% if request.GET.miestnost == room.pk|stringformat:"s" %}selected{% endif %}>
+          {{ room.nazovMiestnosti }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-md-3">
+    <input type="text" name="search" class="form-control form-control-sm" value="{{ request.GET.search }}" placeholder="Hľadaj podľa účelu...">
+  </div>
+  <div class="col-md-3 d-flex gap-2">
+    <button type="submit" class="btn btn-outline-primary btn-sm">Filtrovať</button>
+    <a href="{% url 'reservation_list' %}" class="btn btn-outline-secondary btn-sm">Reset</a>
+  </div>
+</form>
+
+<!-- ── TABLE ───────────────────────────────────────────────── -->
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Miestnosť</th>
+          <th>Dátum</th>
+          <th>Čas</th>
+          <th>Účel</th>
+          {% if request.user.is_staff %}<th>Používateľ</th>{% endif %}
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rezervacie %}
+        <tr>
+          <td>{{ r.miestnostRezervacie.nazovMiestnosti|default:"—" }}</td>
+          <td>{{ r.datumRezervacie }}</td>
+          <td>{{ r.casOd|time:"H:i" }} – {{ r.casDo|time:"H:i" }}</td>
+          <td>{{ r.ucelRezervacie }}</td>
+          {% if request.user.is_staff %}<td>{{ r.pouzivatelRezervacie.username|default:"—" }}</td>{% endif %}
+          <td class="text-end">
+            <a href="{% url 'reservation_detail' r.pk %}" class="btn btn-sm btn-outline-secondary">Detail</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="6" class="text-muted p-3">Žiadne rezervácie.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

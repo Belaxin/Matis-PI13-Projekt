@@ -1,0 +1,78 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}{{ room.nazovMiestnosti }}{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3>{{ room.nazovMiestnosti }}</h3>
+  {% if request.user.is_staff %}
+    <div class="d-flex gap-2">
+      <a href="{% url 'room_edit' room.pk %}" class="btn btn-outline-secondary btn-sm">Upraviť</a>
+      <a href="{% url 'room_delete' room.pk %}" class="btn btn-outline-danger btn-sm">Zmazať</a>
+    </div>
+  {% endif %}
+</div>
+
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-3">
+        <p class="text-muted small mb-0">Číslo miestnosti</p>
+        <p class="fw-semibold">{{ room.cisloMiestnosti }}</p>
+      </div>
+      <div class="col-md-3">
+        <p class="text-muted small mb-0">Kapacita</p>
+        <p class="fw-semibold">{{ room.kapacitaMiestnosti }}</p>
+      </div>
+      <div class="col-md-3">
+        <p class="text-muted small mb-0">Typ</p>
+        <p class="fw-semibold">{{ room.get_typMiestnosti_display }}</p>
+      </div>
+      <div class="col-md-12">
+        <p class="text-muted small mb-0">Popis</p>
+        <p>{{ room.popisMiestnosti|default:"—" }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RESERVATIONS FOR THIS ROOM ─────────────────────────── -->
+<div class="card shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span>📆 Rezervácie</span>
+    <!-- date filter -->
+    <form method="get" class="d-flex gap-2">
+      <input type="date" name="datum" class="form-control form-control-sm" value="{{ request.GET.datum }}">
+      <button type="submit" class="btn btn-outline-primary btn-sm">Filtrovať</button>
+      <a href="{% url 'room_detail' room.pk %}" class="btn btn-outline-secondary btn-sm">Reset</a>
+    </form>
+  </div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Dátum</th>
+          <th>Čas</th>
+          <th>Účel</th>
+          <th>Používateľ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rezervacie %}
+        <tr>
+          <td>{{ r.datumRezervacie }}</td>
+          <td>{{ r.casOd|time:"H:i" }} – {{ r.casDo|time:"H:i" }}</td>
+          <td>{{ r.ucelRezervacie }}</td>
+          <td>{{ r.pouzivatelRezervacie.username|default:"—" }}</td>
+          <td>
+            <a href="{% url 'reservation_detail' r.pk %}" class="btn btn-sm btn-outline-secondary">Detail</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="5" class="text-muted p-3">Žiadne rezervácie.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -12,11 +12,11 @@ Vytvorenie prvych testovacich dat v admin rozhrani✓
 Textovy return v admin panely✓
 
 3 TROJHODINOVKA LOGIKA REZERVACII A FORMULARE
-Implementacia kontroly kolizii validacia prekryvu casov v modeli
-Vytvorenie Django formularov pre tvorbu rezervacie
-Logika priradenia vybavy k rezervacii
-Zabezpecenie ze pouzivatel moze upravovat len vlastne rezervacie
-Tvorba URL smerov pre hlavne funkcionality
+Implementacia kontroly kolizii validacia prekryvu casov v modeli✓
+Vytvorenie Django formularov pre tvorbu rezervacie✓
+Logika priradenia vybavy k rezervacii✓
+Zabezpecenie ze pouzivatel moze upravovat len vlastne rezervacie✓
+Tvorba URL smerov pre hlavne funkcionality✓
 
 4 TROJHODINOVKA FRONTEND FILTRE A REST API
 Tvorba HTML sablon pre zoznam miestnosti a detail s rezervaciami

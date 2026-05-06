@@ -1,0 +1,107 @@
+{% extends "rezervacie/base.html" %}
+{% block title %}Detail rezervácie{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h3>Detail rezervácie</h3>
+  <div class="d-flex gap-2">
+    {% if request.user == rezervacia.pouzivatelRezervacie or request.user.is_staff %}
+      <a href="{% url 'reservation_edit' rezervacia.pk %}" class="btn btn-outline-secondary btn-sm">Upraviť</a>
+      <a href="{% url 'reservation_cancel' rezervacia.pk %}" class="btn btn-outline-danger btn-sm">Zrušiť</a>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ── INFO ────────────────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-6">
+        <p class="text-muted small mb-0">Miestnosť</p>
+        <p class="fw-semibold">{{ rezervacia.miestnostRezervacie.nazovMiestnosti|default:"—" }}</p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-muted small mb-0">Dátum</p>
+        <p class="fw-semibold">{{ rezervacia.datumRezervacie }}</p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-muted small mb-0">Čas</p>
+        <p class="fw-semibold">{{ rezervacia.casOd|time:"H:i" }} – {{ rezervacia.casDo|time:"H:i" }}</p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-muted small mb-0">Účel</p>
+        <p class="fw-semibold">{{ rezervacia.ucelRezervacie }}</p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-muted small mb-0">Používateľ</p>
+        <p class="fw-semibold">{{ rezervacia.pouzivatelRezervacie.username|default:"—" }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── EQUIPMENT ──────────────────────────────────────────── -->
+<div class="card shadow-sm mb-4">
+  <div class="card-header fw-semibold">🔧 Priradené vybavenie</div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Vybavenie</th>
+          <th>Počet kusov</th>
+          <th>Poznámka</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for polozka in vybavenie %}
+        <tr>
+          <td>{{ polozka.vybavenie.nazovVybavenia }}</td>
+          <td>{{ polozka.pocetKusov }}</td>
+          <td>{{ polozka.poznamka|default:"—" }}</td>
+          <td class="text-end">
+            {% if request.user == rezervacia.pouzivatelRezervacie or request.user.is_staff %}
+              <form method="post" action="{% url 'remove_equipment' polozka.pk %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-outline-danger">Odobrať</button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% empty %}
+          <tr><td colspan="4" class="text-muted p-3">Žiadne vybavenie.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ── ADD EQUIPMENT FORM ─────────────────────────────────── -->
+{% if request.user == rezervacia.pouzivatelRezervacie or request.user.is_staff %}
+<div class="card shadow-sm">
+  <div class="card-header fw-semibold">Pridať vybavenie</div>
+  <div class="card-body">
+    <form method="post" action="{% url 'add_equipment' rezervacia.pk %}">
+      {% csrf_token %}
+      <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+          <label class="form-label small">Vybavenie</label>
+          {{ form.vybavenie }}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small">Počet kusov</label>
+          {{ form.pocetKusov }}
+        </div>
+        <div class="col-md-3">
+          <label class="form-label small">Poznámka</label>
+          {{ form.poznamka }}
+        </div>
+        <div class="col-md-2">
+          <button type="submit" class="btn btn-primary w-100">Pridať</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
