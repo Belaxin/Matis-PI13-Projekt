@@ -26,8 +26,8 @@ Implementacia tlacitka na zrusenie rezervacie pouzivatelom✓
 Zakladny styling cez Bootstrap CDN link v base.html✓
 
 5 TROJHODINOVKA NASADENIE A DOKUMENTACIA
-Konfiguracia pre hosting Gunicorn Whitenoise a requirements.txt(optional)
-Nasadenie na free platformu Render alebo PythonAnywhere
-Finalne otestovanie vsetkych funkcii v produkcii
-Napisanie README.md a strucnej dokumentacie k projektu
+Konfiguracia pre hosting Gunicorn Whitenoise a requirements.txt(optional)✓
+Nasadenie na free platformu Render alebo PythonAnywhere✓
+Finalne otestovanie vsetkych funkcii v produkcii✓
+Napisanie README.md a strucnej dokumentacie k projektu✓
 Priprava prezentacie screenshoty a popis projektu
