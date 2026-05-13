@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from . import views, api
 
 urlpatterns = [
     # auth
@@ -11,11 +11,11 @@ urlpatterns = [
     path("", views.index, name="index"),
 
     # admin
-    path("admin-panel/",                              views.admin_dashboard,        name="admin_dashboard"),
-    path("admin-panel/users/new/",                    views.admin_user_create,      name="admin_user_create"),
-    path("admin-panel/users/<int:pk>/edit/",          views.admin_user_edit,        name="admin_user_edit"),
-    path("admin-panel/users/<int:pk>/delete/",        views.admin_user_delete,      name="admin_user_delete"),
-    path("admin-panel/reservations/<int:pk>/delete/", views.admin_reservation_delete, name="admin_reservation_delete"),
+    path("admin-panel/",                              views.admin_dashboard,           name="admin_dashboard"),
+    path("admin-panel/users/new/",                    views.admin_user_create,         name="admin_user_create"),
+    path("admin-panel/users/<int:pk>/edit/",          views.admin_user_edit,           name="admin_user_edit"),
+    path("admin-panel/users/<int:pk>/delete/",        views.admin_user_delete,         name="admin_user_delete"),
+    path("admin-panel/reservations/<int:pk>/delete/", views.admin_reservation_delete,  name="admin_reservation_delete"),
 
     # reservations
     path("rezervacie/",                views.reservation_list,   name="reservation_list"),
@@ -25,8 +25,8 @@ urlpatterns = [
     path("rezervacie/<int:pk>/zrus/",  views.reservation_cancel, name="reservation_cancel"),
 
     # equipment assignment (M:N)
-    path("rezervacie/<int:pk>/vybavenie/pridaj/",      views.add_equipment,    name="add_equipment"),
-    path("vybavenie-rezervacia/<int:pk>/odstran/",     views.remove_equipment, name="remove_equipment"),
+    path("rezervacie/<int:pk>/vybavenie/pridaj/",  views.add_equipment,    name="add_equipment"),
+    path("vybavenie-rezervacia/<int:pk>/odstran/", views.remove_equipment, name="remove_equipment"),
 
     # rooms
     path("miestnosti/",                views.room_list,   name="room_list"),
@@ -40,4 +40,11 @@ urlpatterns = [
     path("vybavenie/nove/",           views.equipment_create, name="equipment_create"),
     path("vybavenie/<int:pk>/uprav/", views.equipment_edit,   name="equipment_edit"),
     path("vybavenie/<int:pk>/zmaz/",  views.equipment_delete, name="equipment_delete"),
+
+    # ── REST API ───────────────────────────────────────────────────────────
+    # these return JSON, not HTML
+    path("api/miestnosti/",             api.api_room_list,          name="api_room_list"),
+    path("api/miestnosti/<int:pk>/",    api.api_room_detail,        name="api_room_detail"),
+    path("api/rezervacie/",             api.api_reservation_list,   name="api_reservation_list"),
+    path("api/rezervacie/<int:pk>/",    api.api_reservation_detail, name="api_reservation_detail"),
 ]

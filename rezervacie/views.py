@@ -119,19 +119,9 @@ def admin_reservation_delete(request, pk):
 
 @login_required
 def reservation_list(request):
-    """
-    Admins see all reservations.
-    Regular users only see their own.
-    Filtering by date, room, purpose via GET params.
-    """
-    if request.user.is_staff:
-        rezervacie = Reservation.objects.select_related("pouzivatelRezervacie", "miestnostRezervacie")
-    else:
-        rezervacie = Reservation.objects.filter(
-            pouzivatelRezervacie=request.user
-        ).select_related("miestnostRezervacie")
+    # everyone sees all reservations
+    rezervacie = Reservation.objects.select_related("pouzivatelRezervacie", "miestnostRezervacie")
 
-    # filtering
     datum   = request.GET.get("datum")
     room_id = request.GET.get("miestnost")
     search  = request.GET.get("search", "").strip()
@@ -154,15 +144,8 @@ def reservation_list(request):
 @login_required
 def reservation_detail(request, pk):
     rezervacia = get_object_or_404(Reservation, pk=pk)
-
-    # ownership check — regular users can't view other people's reservations
-    if not request.user.is_staff and rezervacia.pouzivatelRezervacie != request.user:
-        messages.error(request, "Nemáš prístup k tejto rezervácii.")
-        return redirect("reservation_list")
-
     vybavenie = ReservationEquipment.objects.filter(rezervacia=rezervacia).select_related("vybavenie")
     form = ReservationEquipmentForm()
-
     return render(request, "rezervacie/reservation_detail.html", {
         "rezervacia": rezervacia,
         "vybavenie": vybavenie,
@@ -208,16 +191,19 @@ def reservation_edit(request, pk):
 @login_required
 def reservation_cancel(request, pk):
     rezervacia = get_object_or_404(Reservation, pk=pk)
-
+ 
     if not request.user.is_staff and rezervacia.pouzivatelRezervacie != request.user:
         messages.error(request, "Nemáš oprávnenie zrušiť túto rezerváciu.")
         return redirect("reservation_list")
-
+ 
     if request.method == "POST":
         rezervacia.delete()
         messages.success(request, "Rezervácia bola zrušená.")
         return redirect("reservation_list")
-    return render(request, "rezervacie/confirm_delete.html", {"object": rezervacia, "type": "rezerváciu"})
+ 
+    # fallback if somehow accessed via GET
+    return redirect("reservation_detail", pk=pk)
+ 
 
 
 # ── EQUIPMENT ASSIGNMENT (M:N) ─────────────────────────────────────────────

@@ -19,11 +19,11 @@ Zabezpecenie ze pouzivatel moze upravovat len vlastne rezervacie✓
 Tvorba URL smerov pre hlavne funkcionality✓
 
 4 TROJHODINOVKA FRONTEND FILTRE A REST API
-Tvorba HTML sablon pre zoznam miestnosti a detail s rezervaciami
-Implementacia filtrovania podla datumu a typu cez GET parametre
-Vytvorenie REST API endpointov cez JsonResponse pre miestnosti a rezervacie
-Implementacia tlacitka na zrusenie rezervacie pouzivatelom
-Zakladny styling cez Bootstrap CDN link v base.html
+Tvorba HTML sablon pre zoznam miestnosti a detail s rezervaciami✓
+Implementacia filtrovania podla datumu a typu cez GET parametre✓
+Vytvorenie REST API endpointov cez JsonResponse pre miestnosti a rezervacie✓
+Implementacia tlacitka na zrusenie rezervacie pouzivatelom✓
+Zakladny styling cez Bootstrap CDN link v base.html✓
 
 5 TROJHODINOVKA NASADENIE A DOKUMENTACIA
 Konfiguracia pre hosting Gunicorn Whitenoise a requirements.txt(optional)
