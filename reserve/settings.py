@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n1a#tojb!!u$=_^pf+%&q%if2^wx!=e)i+9s2cv1qx_joleji3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["matis-pi13-projekt.onrender.com", "localhost", "127.0.0.1"]
 
 
 # Application definition
