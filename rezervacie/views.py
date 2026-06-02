@@ -49,8 +49,8 @@ def index(request):
     from django.utils import timezone
     today = timezone.localdate()
     rezervacie = Reservation.objects.filter(
-        pouzivatelRezervacie=request.user
-    ).order_by("datumRezervacie", "casOd")
+        datumRezervacie=today
+    ).select_related("miestnostRezervacie", "pouzivatelRezervacie").order_by("casOd")
     return render(request, "rezervacie/index.html", {
         "rezervacie": rezervacie,
         "today": today,
