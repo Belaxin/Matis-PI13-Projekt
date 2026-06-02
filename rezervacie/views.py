@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.db.models import Q
+from datetime import date
 
 from .models import Room, Equipment, Reservation, ReservationEquipment
 from .forms import (
@@ -51,6 +52,17 @@ def index(request):
     rezervacie = Reservation.objects.filter(
         datumRezervacie=today
     ).select_related("miestnostRezervacie", "pouzivatelRezervacie").order_by("casOd")
+
+    if not rezervacie.exists():
+        # If the current timezone date differs from the system date,
+        # fall back to the local system date so today's reservations still show.
+        today_alt = date.today()
+        if today_alt != today:
+            rezervacie = Reservation.objects.filter(
+                datumRezervacie=today_alt
+            ).select_related("miestnostRezervacie", "pouzivatelRezervacie").order_by("casOd")
+            today = today_alt
+
     return render(request, "rezervacie/index.html", {
         "rezervacie": rezervacie,
         "today": today,
