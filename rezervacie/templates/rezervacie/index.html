@@ -7,36 +7,52 @@
   <a href="{% url 'reservation_create' %}" class="btn btn-primary">+ Nová rezervácia</a>
 </div>
 
-<!-- These cards will show real data once you wire up the models -->
-<div class="row g-3 mb-4">
-  <div class="col-md-4">
-    <div class="card text-center shadow-sm">
-      <div class="card-body">
-        <div class="fs-1">—</div>
-        <div class="text-muted">Miestností</div>
-        <a href="{% url 'room_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
-      </div>
-    </div>
+{% extends "rezervacie/base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h3 class="mb-0">Dashboard</h3>
+    <p class="text-muted small mb-0">Dnes: {{ today }}</p>
   </div>
-  <div class="col-md-4">
-    <div class="card text-center shadow-sm">
-      <div class="card-body">
-        <div class="fs-1">—</div>
-        <div class="text-muted">Rezervácií dnes</div>
-        <a href="{% url 'reservation_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4">
-    <div class="card text-center shadow-sm">
-      <div class="card-body">
-        <div class="fs-1">—</div>
-        <div class="text-muted">Kusov vybavenia</div>
-        <a href="{% url 'equipment_list' %}" class="btn btn-sm btn-outline-secondary mt-2">Zobraziť</a>
-      </div>
-    </div>
+  <a href="{% url 'reservation_create' %}" class="btn btn-primary btn-sm">+ Nová rezervácia</a>
+</div>
+
+<div class="card shadow-sm">
+  <div class="card-header fw-semibold">📆 Dnešné rezervácie</div>
+  <div class="card-body p-0">
+    <table class="table table-hover mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Miestnosť</th>
+          <th>Čas</th>
+          <th>Účel</th>
+          <th>Učiteľ</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rezervacie %}
+        <tr>
+          <td>{{ r.miestnostRezervacie.nazovMiestnosti|default:"—" }}</td>
+          <td>{{ r.casOd|time:"H:i" }} – {{ r.casDo|time:"H:i" }}</td>
+          <td>{{ r.ucelRezervacie }}</td>
+          <td>{{ r.pouzivatelRezervacie.get_full_name|default:r.pouzivatelRezervacie.username }}</td>
+          <td>
+            <a href="{% url 'reservation_detail' r.pk %}" class="btn btn-sm btn-outline-secondary">Detail</a>
+          </td>
+        </tr>
+        {% empty %}
+          <tr>
+            <td colspan="5" class="text-muted p-3">Dnes nie sú žiadne rezervácie.</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
+{% endblock %}
 
 <div class="card shadow-sm">
   <div class="card-header">Dnešné rezervácie</div>
