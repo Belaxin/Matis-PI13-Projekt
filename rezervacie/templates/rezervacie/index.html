@@ -3,15 +3,6 @@
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-  <h2>Dashboard</h2>
-  <a href="{% url 'reservation_create' %}" class="btn btn-primary">+ Nová rezervácia</a>
-</div>
-
-{% extends "rezervacie/base.html" %}
-{% block title %}Dashboard{% endblock %}
-
-{% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
   <div>
     <h3 class="mb-0">Dashboard</h3>
     <p class="text-muted small mb-0">Dnes: {{ today }}</p>
