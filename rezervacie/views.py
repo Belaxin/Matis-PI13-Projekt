@@ -66,6 +66,8 @@ def index(request):
     return render(request, "rezervacie/index.html", {
         "rezervacie": rezervacie,
         "today": today,
+        "rooms_count": Room.objects.count(),
+        "total_count": Reservation.objects.count(),
     })
 
 
