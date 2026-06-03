@@ -48,20 +48,24 @@ def logout_view(request):
 @login_required
 def index(request):
     from django.utils import timezone
-    today = timezone.localdate()
+    today = timezone.localdate()  # Get today's date
+    print("DEBUG: Today's date:", today)  # Debug today's date
+
     rezervacie = Reservation.objects.filter(
         datumRezervacie=today
     ).select_related("miestnostRezervacie", "pouzivatelRezervacie").order_by("casOd")
+    print("DEBUG: Reservations for today:", rezervacie)  # Debug queryset
 
     if not rezervacie.exists():
-        # If the current timezone date differs from the system date,
-        # fall back to the local system date so today's reservations still show.
+        # Fallback to system date if timezone date doesn't match
         today_alt = date.today()
+        print("DEBUG: Fallback to system date:", today_alt)  # Debug fallback date
         if today_alt != today:
             rezervacie = Reservation.objects.filter(
                 datumRezervacie=today_alt
             ).select_related("miestnostRezervacie", "pouzivatelRezervacie").order_by("casOd")
             today = today_alt
+            print("DEBUG: Reservations for fallback date:", rezervacie)  # Debug fallback queryset
 
     return render(request, "rezervacie/index.html", {
         "rezervacie": rezervacie,
