@@ -7,17 +7,33 @@ from .models import Reservation, ReservationEquipment, Room, Equipment
 # ── AUTH ───────────────────────────────────────────────────────────────────
 
 class LoginForm(AuthenticationForm):
-    username = forms.CharField(widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Meno"}))
-    password = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Heslo"}))
+    username = forms.CharField(
+        label="Používateľské meno",
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "Meno"})
+    )
+    password = forms.CharField(
+        label="Heslo",
+        widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "Heslo"})
+    )
 
 
 class RegisterForm(forms.ModelForm):
-    password  = forms.CharField(widget=forms.PasswordInput(attrs={"class": "form-control"}))
-    password2 = forms.CharField(label="Potvrď heslo", widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    password  = forms.CharField(
+        label="Heslo",
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
+    password2 = forms.CharField(
+        label="Potvrď heslo",
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
 
     class Meta:
         model  = User
         fields = ["username", "email"]
+        labels = {
+            "username": "Používateľské meno",
+            "email":    "E-mail",
+        }
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-control"}),
             "email":    forms.EmailInput(attrs={"class": "form-control"}),
@@ -38,21 +54,34 @@ class RegisterForm(forms.ModelForm):
 
 
 class UserCreateForm(forms.ModelForm):
-    password  = forms.CharField(required=False, widget=forms.PasswordInput(attrs={"class": "form-control"}),
-                                help_text="Nechaj prázdne ak nechceš meniť heslo.")
-    password2 = forms.CharField(required=False, label="Potvrď heslo",
-                                widget=forms.PasswordInput(attrs={"class": "form-control"}))
+    password  = forms.CharField(
+        label="Heslo",
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control"}),
+        help_text="Nechaj prázdne ak nechceš meniť heslo."
+    )
+    password2 = forms.CharField(
+        label="Potvrď heslo",
+        required=False,
+        widget=forms.PasswordInput(attrs={"class": "form-control"})
+    )
 
     class Meta:
         model  = User
         fields = ["username", "email", "first_name", "last_name", "is_staff"]
+        labels = {
+            "username":   "Používateľské meno",
+            "email":      "E-mail",
+            "first_name": "Meno",
+            "last_name":  "Priezvisko",
+            "is_staff":   "Admin práva",
+        }
         widgets = {
             "username":   forms.TextInput(attrs={"class": "form-control"}),
             "email":      forms.EmailInput(attrs={"class": "form-control"}),
             "first_name": forms.TextInput(attrs={"class": "form-control"}),
             "last_name":  forms.TextInput(attrs={"class": "form-control"}),
         }
-        labels = {"is_staff": "Admin práva"}
 
     def clean(self):
         cleaned_data = super().clean()
@@ -74,13 +103,16 @@ class UserCreateForm(forms.ModelForm):
 # ── RESERVATION ────────────────────────────────────────────────────────────
 
 class ReservationForm(forms.ModelForm):
-    """
-    pouzivatelRezervacie is excluded — set in the view from request.user.
-    vybavenie is excluded — assigned separately after creation.
-    """
     class Meta:
         model  = Reservation
         fields = ["datumRezervacie", "casOd", "casDo", "ucelRezervacie", "miestnostRezervacie"]
+        labels = {
+            "datumRezervacie":     "Dátum",
+            "casOd":               "Čas od",
+            "casDo":               "Čas do",
+            "ucelRezervacie":      "Účel rezervácie",
+            "miestnostRezervacie": "Miestnosť",
+        }
         widgets = {
             "datumRezervacie":     forms.DateInput(attrs={"class": "form-control", "type": "date"}),
             "casOd":               forms.TimeInput(attrs={"class": "form-control", "type": "time"}),
@@ -90,10 +122,6 @@ class ReservationForm(forms.ModelForm):
         }
 
     def clean(self):
-        """
-        Calls model.clean() so collision logic defined there
-        is also triggered during form validation.
-        """
         cleaned_data = super().clean()
         instance = self.instance
         instance.datumRezervacie     = cleaned_data.get("datumRezervacie")
@@ -110,10 +138,14 @@ class ReservationForm(forms.ModelForm):
 # ── EQUIPMENT ASSIGNMENT ───────────────────────────────────────────────────
 
 class ReservationEquipmentForm(forms.ModelForm):
-    """rezervacia is set in the view, not here."""
     class Meta:
         model  = ReservationEquipment
         fields = ["vybavenie", "pocetKusov", "poznamka"]
+        labels = {
+            "vybavenie":  "Vybavenie",
+            "pocetKusov": "Počet kusov",
+            "poznamka":   "Poznámka",
+        }
         widgets = {
             "vybavenie":  forms.Select(attrs={"class": "form-select"}),
             "pocetKusov": forms.NumberInput(attrs={"class": "form-control", "min": 1}),
@@ -127,6 +159,13 @@ class RoomForm(forms.ModelForm):
     class Meta:
         model  = Room
         fields = ["nazovMiestnosti", "cisloMiestnosti", "kapacitaMiestnosti", "typMiestnosti", "popisMiestnosti"]
+        labels = {
+            "nazovMiestnosti":    "Názov miestnosti",
+            "cisloMiestnosti":    "Číslo miestnosti",
+            "kapacitaMiestnosti": "Kapacita",
+            "typMiestnosti":      "Typ miestnosti",
+            "popisMiestnosti":    "Popis",
+        }
         widgets = {
             "nazovMiestnosti":    forms.TextInput(attrs={"class": "form-control"}),
             "cisloMiestnosti":    forms.NumberInput(attrs={"class": "form-control"}),
@@ -142,6 +181,11 @@ class EquipmentForm(forms.ModelForm):
     class Meta:
         model  = Equipment
         fields = ["nazovVybavenia", "typVybavenia", "popis"]
+        labels = {
+            "nazovVybavenia": "Názov vybavenia",
+            "typVybavenia":   "Typ vybavenia",
+            "popis":          "Popis",
+        }
         widgets = {
             "nazovVybavenia": forms.TextInput(attrs={"class": "form-control"}),
             "typVybavenia":   forms.Select(attrs={"class": "form-select"}),
